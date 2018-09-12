@@ -20,7 +20,7 @@ Your company consists of three people, each doing some work for your customers: 
 You send the following bill to ACME:
 
 | Position         | Price    |
-| --------         | -----    |
+| ---------------- | -------- |
 | Service contract | 1,500.00 |
 | VAT 19%          | 285.00   |
 | Total            | 1,785.00 |
