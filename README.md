@@ -1,4 +1,6 @@
 # sbill -- split bills between people
+This manual corresponds to version 1.0.1 of sbill.
+
 ## Installation
 sbill is written in Python 3 and has been tested with Python version 3.6.5 on a Ubuntu 18.04 system.
 
