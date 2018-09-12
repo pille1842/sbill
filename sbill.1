@@ -1,0 +1,59 @@
+.\" Process this file with
+.\" groff -man -Tascii sbill.1
+.\"
+.TH SBILL 1 "SEPTEMBER 2018" Linux "User Manuals"
+.SH NAME
+sbill \- split bills between people
+.SH SYNOPSIS
+.B sbill [-h] [-v] [-t
+.I taxrate
+.B ]
+total share
+.B [
+share ...
+.B ]
+.SH DESCRIPTION
+.B sbill
+takes a
+.I total
+and subtracts each given
+.I share
+from it, optionally applying the given
+.I taxrate
+to the share.
+Each share after tax is printed to stdout, preceded by a
+consecutive number beginning at 0.
+If the total is not zero after subtracting all
+.I shares
+the remainder is printed, preceded by the letter R.
+If the given
+.I shares
+amount to more than the
+.I total
+the missing amount is printed, preceded by the letter M.
+Otherwise nothing is printed.
+.SH OPTIONS
+.IP "-t, --taxrate=taxrate"
+Apply the given
+.I taxrate
+to each share.
+.I taxrate
+should be an integer, e.g. 19 to apply a tax of 19 percent,
+which coincidentally is also the default.
+.IP "-h, --help"
+Print a short usage notice and exit.
+.IP "-v, --version"
+Print the program's version number and exit.
+.SH ENVIRONMENT
+.IP TAXRATE
+If set, use this taxrate instead of the default of 19 percent.
+If the value is not a valid floating-point number, sbill will print
+an error message and use the default taxrate instead.
+If the command-line option
+.B --taxrate
+is given, its value overrides the environment variable.
+.SH AUTHOR
+Eric Haberstroh <gpg@erixpage.de>
+.SH "SEE ALSO"
+.BR lkup (1),
+.BR hermes (1)

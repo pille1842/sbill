@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+# -*- mode: python; coding: utf-8 -*-
+#
+# sbill -- split bills between several people
+# Copyright (C) 2018  Eric Haberstroh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import argparse
+import os
+import sys
+
+DEFAULTTAXRATE = 19
+
+if 'TAXRATE' in os.environ:
+    try:
+        taxrate = float(os.environ['TAXRATE'])
+    except ValueError:
+        print("{}: unable to convert value of TAXRATE to float. Using default value instead".format(sys.argv[0]), file=sys.stderr)
+    taxrate = DEFAULTTAXRATE
+else:
+    taxrate = DEFAULTTAXRATE
+
+parser = argparse.ArgumentParser(description='Split bills between several people.')
+parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0.0')
+parser.add_argument('-t', '--taxrate', type=int, default=taxrate, help='taxrate to add to each share (default: environment variable TAXRATE or, if not set, 19 percent)')
+parser.add_argument('total', type=float, help='total amount of the bill (including tax)')
+parser.add_argument('share', type=float, nargs='+', help='a share of the bill (net value)')
+
+args = parser.parse_args()
+subtotal = args.total
+count = 0
+
+for share in args.share:
+    if args.taxrate != 0:
+        share = share * (1 + args.taxrate / 100)
+    print("{count:2d}: {share: 8.2f}".format(count=count, share=share))
+    subtotal -= share
+    count += 1
+
+if subtotal > 0:
+    print(" R: {total: 8.2f}".format(total=subtotal))
+elif subtotal < 0:
+    print(" M: {total: 8.2f}".format(total=subtotal))
